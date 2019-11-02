@@ -1,4 +1,4 @@
-# Pure SPA
+# Vanilla SPA
 
 Back when I first started studing IT i figured I wanted to create a single page application. Only knowing JavaScript, being aware jQuery, but having felt the problems jQuery once solved, I figured lets go pure JS! Fast forward a few years and the desire to go back to an approach relying less on frameworks and libraries arises again.
 
@@ -9,6 +9,8 @@ _What do we need to have a working PWA?_ We need some way of knowing what conten
 On hash change and urls
 
 ## Templates
+
+Working sample available at [https://dagfrode.no/vanilla-spa/src](https://dagfrode.no/vanilla-spa/src)
 
 ## Resources
 
