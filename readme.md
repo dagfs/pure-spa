@@ -1,40 +1,16 @@
 # Vanilla SPA
 
-Back when I first started studing IT i figured I wanted to create a single page application. Only knowing JavaScript, being aware jQuery, but having felt the problems jQuery once solved, I figured lets go pure JS! Fast forward a few years and the desire to go back to an approach relying less on frameworks and libraries arises again.
+Back when I started studing IT, I figured I wanted to create a Single Page Application(SPA). I knew some HTML, css and JavaScript, and that was enough to get something up and running.
 
-_What do we need to have a working PWA?_ We need some way of knowing what content to show, preferable in a way that allowes a user to link to the correct content. We need some way to show the correct information.
+Fast forward a few years and the desire to go back to an approach relying less on frameworks and libraries arises again. It is so easy to add React, Vue, or Angular, to something that might not need it. It can also be nice to be reminded of what problems these fremeworks solves for us and how they limit us.
 
-## Navigation
+**What do we need to create a SPA?**
 
-On hash change and urls
-
-```js
-// Navigation
-function navigate() {
-  var path = location.hash.substr(1).split("/");
-  var currentPage = path[0].toLowerCase();
-  if (!ELEMENTS.PAGES.hasOwnProperty(currentPage)) {
-    if (path[0] === "") {
-      currentPage = "main";
-    } else {
-      currentPage = "page404";
-    }
-  }
-  for (var page in ELEMENTS.PAGES) {
-    if (ELEMENTS.PAGES.hasOwnProperty(page)) {
-      ELEMENTS.PAGES[page].page.classList.remove("active");
-    }
-  }
-  ELEMENTS.PAGES[currentPage].page.classList.add("active");
-  if (pageFunctions.hasOwnProperty(currentPage)) pageFunctions[currentPage]();
-}
-
-navigate();
-
-window.onhashchange = navigate;
-```
+- We need some way of knowing what content to show, preferable in a way that allowes a user to link to the correct content.
 
 ## Templates
+
+We need some way of showing content. By defining page, we can create templates for the different content we want to show and add the static content for each page.
 
 ```html
 <html>
@@ -60,17 +36,90 @@ window.onhashchange = navigate;
 </html>
 ```
 
+To access the templates, you can define an object structure to keep the structure of your pages and make it easier to reference the correct elements.
+
 ```js
 // Define html element references
-var ELEMENTS = {};
-ELEMENTS.PAGES = {};
-ELEMENTS.PAGES.main = {};
-ELEMENTS.PAGES.main.page = document.querySelector("#main");
-ELEMENTS.PAGES.page2 = {};
-ELEMENTS.PAGES.page2.page = document.querySelector("#page2");
-ELEMENTS.PAGES["page404"] = {};
-ELEMENTS.PAGES["page404"].page = document.querySelector("#page404");
-ELEMENTS.PAGES["page404"].error = document.querySelector("#page404-error");
+PAGES = {};
+
+// Main page
+PAGES.main = {};
+PAGES.main.page = document.querySelector("#main");
+
+// Some other page
+PAGES.page2 = {};
+PAGES.page2.page = document.querySelector("#page2");
+
+// 404
+PAGES["page404"] = {};
+PAGES["page404"].page = document.querySelector("#page404");
+PAGES["page404"].error = document.querySelector("#page404-error");
+```
+
+## Navigation
+
+We need some way of navigating between content in the SPA. By using the function `window.onhashchange`, we can detect when the hash in the url changes. Combinding this with anchors, we have a nice way of changing the content of the SPA.
+
+The url hash is easely accessaable trough `location.hash`
+
+```js
+// Navigation
+function navigate() {
+  // Get the url path in a easy
+  var path = location.hash
+    .substr(1)
+    .toLowerCase()
+    .split("/");
+
+  // Find what page to show
+  var currentPage = path[0];
+  if (!PAGES.hasOwnProperty(currentPage)) {
+    if (path[0] === "") {
+      currentPage = "main";
+    } else {
+      currentPage = "page404";
+    }
+  }
+
+  // Hide the previous active page
+  for (var page in PAGES) {
+    if (PAGES.hasOwnProperty(page)) {
+      PAGES[page].page.classList.remove("active");
+    }
+  }
+
+  // Show the active page and run its custom script
+  PAGES[currentPage].page.classList.add("active");
+  if (pageFunctions.hasOwnProperty(currentPage)) {
+    pageFunctions[currentPage]();
+  }
+}
+
+// First time loading the page
+navigate();
+
+window.onhashchange = navigate;
+```
+
+To only show the active page we need to add some default styling to hide all the pages.
+
+```css
+.page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+}
+```
+
+The `PAGES` object we created makes it easy to add and remove a css class to the active page that should be displayed.
+
+```css
+.page.active {
+  display: block;
+}
 ```
 
 ## Code to run on entering page
