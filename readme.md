@@ -1,12 +1,10 @@
 # Vanilla SPA
 
-Back when I started studing IT, I figured I wanted to create a Single Page Application(SPA). I knew some HTML, css and JavaScript, and that was enough to get something up and running.
+Back when I started studying IT, I figured I wanted to create a Single Page Application(SPA). I knew some HTML, css and JavaScript, and that was enough to get something up and running.
 
-Fast forward a few years and the desire to go back to an approach relying less on frameworks and libraries arises again. It is so easy to add React, Vue, or Angular, to something that might not need it. It can also be nice to be reminded of what problems these fremeworks solves for us and how they limit us.
+Fast forward a few years and the desire to go back to an approach relying less on frameworks and libraries arises again. It is so easy to add React, Vue, or Angular, to something that might not need it. It is also nice to be reminded of what these frameworks solves for us and how they limit us.
 
-**What do we need to create a SPA?**
-
-- We need some way of knowing what content to show, preferable in a way that allowes a user to link to the correct content.
+Lets look at how we can create a simple SPA:
 
 ## Templates
 
@@ -58,15 +56,17 @@ PAGES["page404"].error = document.querySelector("#page404-error");
 
 ## Navigation
 
-We need some way of navigating between content in the SPA. By using the function `window.onhashchange`, we can detect when the hash in the url changes. Combinding this with anchors, we have a nice way of changing the content of the SPA.
+We need some way of navigating between content in the SPA. By using the function `window.onhashchange`, we can detect when the hash in the url changes. Combinding this with anchors, and we have a nice way of changing the content of the SPA.
 
-The url hash is easely accessaable trough `location.hash`
+The url hash is easily accessible trough `location.hash`
 
 ```js
+var path;
+
 // Navigation
 function navigate() {
   // Get the url path in a easy
-  var path = location.hash
+  path = location.hash
     .substr(1)
     .toLowerCase()
     .split("/");
@@ -122,11 +122,15 @@ The `PAGES` object we created makes it easy to add and remove a css class to the
 }
 ```
 
-## Code to run on entering page
+## Custom code for each page
+
+Some of the pages needs to load some additional information based on parameters in the url. To achieve this we can create a map of the pages with the code to run for each page.
 
 ```js
 // Code to run for each page
 pageFunctions = {};
+
+// Custom code to run when showing the 404 page
 pageFunctions["page404"] = function() {
   ELEMENTS.PAGES["page404"].error.innerHTML = `Page ${location.hash.substr(
     1
@@ -136,7 +140,13 @@ pageFunctions["page404"] = function() {
 
 ## Demo
 
+(might skip this / move it to another place)
+
 Working sample available at [https://dagfrode.no/vanilla-spa/src](https://dagfrode.no/vanilla-spa/src)
+
+<!--
+
+---
 
 ## Resources
 
@@ -149,3 +159,4 @@ Working sample available at [https://dagfrode.no/vanilla-spa/src](https://dagfro
 - Web Components? yey
 
 https://github.com/DagF/norbrygg
+-->
