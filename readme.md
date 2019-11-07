@@ -8,7 +8,9 @@ Lets look at how we can create a simple SPA:
 
 ## Templates
 
-We need some way of showing content. By defining page, we can create templates for the different content we want to show and add the static content for each page.
+Lets start by creating some way of showing content. We will do this by creating a page class that will be hidden by default. In the next section we will look at code that will add a class to the active page to show the correct content. The main page gets to be the default page shown until the javascript has loaded.
+
+The templates we create for the SPA let us add static content and placeholders for the different pages. We often know much of the content of each page and then only parts of the page that is dynamic.
 
 ```html
 <html>
@@ -17,13 +19,14 @@ We need some way of showing content. By defining page, we can create templates f
     <link rel="stylesheet" type="text/css" href="main.css" />
   </head>
   <body>
-    <div id="main" class="page">
-      <h1>main</h1>
-      <a href="#page2">Page 2</a>
+    <div id="main" class="page active">
+      <h1>Forside</h1>
+      Alle ...
     </div>
-    <div id="page2" class="page">
-      <h1>page 2</h1>
-      <a href="#main">Main</a>
+    <div id="bom" class="page">
+      <a href="#main">&lt; Tilbake til forsiden</a>
+      <h1>Bompenger</h1>
+      <div id="bommer"></div>
     </div>
     <div id="page404" class="page">
       <h1>404</h1>
@@ -45,13 +48,14 @@ PAGES.main = {};
 PAGES.main.page = document.querySelector("#main");
 
 // Some other page
-PAGES.page2 = {};
-PAGES.page2.page = document.querySelector("#page2");
+PAGES.bom = {};
+PAGES.bom.page = document.querySelector("#bom");
+PAGES.bom.content = document.querySelector("#bommer");
 
 // 404
-PAGES["page404"] = {};
-PAGES["page404"].page = document.querySelector("#page404");
-PAGES["page404"].error = document.querySelector("#page404-error");
+PAGES.page404 = {};
+PAGES.page404.page = document.querySelector("#page404");
+PAGES.page404.error = document.querySelector("#page404-error");
 ```
 
 ## Navigation
@@ -81,6 +85,8 @@ function navigate() {
     }
   }
 
+  console.log(currentPage);
+
   // Hide the previous active page
   for (var page in PAGES) {
     if (PAGES.hasOwnProperty(page)) {
@@ -90,9 +96,6 @@ function navigate() {
 
   // Show the active page and run its custom script
   PAGES[currentPage].page.classList.add("active");
-  if (pageFunctions.hasOwnProperty(currentPage)) {
-    pageFunctions[currentPage]();
-  }
 }
 
 // First time loading the page
@@ -101,22 +104,13 @@ navigate();
 window.onhashchange = navigate;
 ```
 
-To only show the active page we need to add some default styling to hide all the pages.
+To only show the active page we need to add some styling to hide all pages that is not active.
 
 ```css
 .page {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
   display: none;
 }
-```
 
-The `PAGES` object we created makes it easy to add and remove a css class to the active page that should be displayed.
-
-```css
 .page.active {
   display: block;
 }
@@ -131,11 +125,46 @@ Some of the pages needs to load some additional information based on parameters 
 pageFunctions = {};
 
 // Custom code to run when showing the 404 page
-pageFunctions["page404"] = function() {
-  ELEMENTS.PAGES["page404"].error.innerHTML = `Page ${location.hash.substr(
-    1
-  )} not found!`;
+pageFunctions.page404 = function() {
+  PAGES.page404.error.innerHTML = `Page ${location.hash.substr(1)} not found!`;
 };
+```
+
+We also need to hock the custom code to the navigate function by adding some code to the end of our navigate function.
+
+```js
+//Run custom page code if it exists
+if (pageFunctions.hasOwnProperty(currentPage)) {
+  pageFunctions[currentPage]();
+}
+```
+
+## Adding dynamic content
+
+To add some dynamic content to the page we create a new custom function for the page bom and add a rest call.
+
+We use `fetch` to retrieve the data and `reduce` to generate what we will show.
+
+```js
+pageFunctions["bom"] = function() {
+  fetch("https://hotell.difi.no/api/json/vegvesen/bomstasjoner?")
+    .then(response => response.json())
+    .then(json => {
+      PAGES["bom"].content.innerHTML = json.entries.reduce((acc, bom) => {
+        return (acc += bomInfo(bom));
+      }, "");
+    });
+};
+
+function bomInfo(bom) {
+  return `
+  <div class="bom">
+  <h2>${bom.navn}</h2>
+  <h3>Takst stor bil: ${bom.takst_stor_bil}</h3>
+  <h3>Takst liten bil: ${bom.takst_liten_bil}</h3>
+  </div>
+  `;
+}
 ```
 
 ## Demo
