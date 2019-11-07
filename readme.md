@@ -1,14 +1,14 @@
 # Vanilla SPA
 
-Back when I started studying IT, I figured I wanted to create a Single Page Application(SPA). I knew some HTML, css and JavaScript, and that was enough to get something up and running.
+Back when I started studying IT, I figured I wanted to create a Single Page Application(SPA). I knew some HTML, CSS, and JavaScript, and that was enough to get something up and running.
 
-Fast forward a few years and the desire to go back to an approach relying less on frameworks and libraries arises again. It is so easy to add React, Vue, or Angular, to something that might not need it. It is also nice to be reminded of what these frameworks solves for us and how they limit us.
+Fast forward a few years, and the desire to go back to an approach relying less on frameworks and libraries arises again. It is so easy to add React, Vue, or Angular, to something that might not need it. Writing everything from scratch is also a way to reminds us of what these frameworks solve for us and how they limit us.
 
-Lets look at how we can create a simple SPA:
+Let's look at how we can create a simple SPA.
 
 ## Templates
 
-Lets start by creating some way of showing content. We will do this by creating a page class that will be hidden by default. In the next section we will look at code that will add a class to the active page to show the correct content. The main page gets to be the default page shown until the javascript has loaded.
+Let's start by creating some way of showing content. We will do this by creating a page class that will be hidden by default. In the next section, we will look at code that will add a class to the active page to show the correct content. The main page gets to be the default page shown until the javascript has loaded.
 
 The templates we create for the SPA let us add static content and placeholders for the different pages. We often know much of the content of each page and then only parts of the page that is dynamic.
 
@@ -60,9 +60,9 @@ PAGES.page404.error = document.querySelector("#page404-error");
 
 ## Navigation
 
-We need some way of navigating between content in the SPA. By using the function `window.onhashchange`, we can detect when the hash in the url changes. Combinding this with anchors, and we have a nice way of changing the content of the SPA.
+We need some way of navigating between content in the SPA. By using the function `window.onhashchange`, we can detect when the hash in the URL changes. Combining this with anchors, and we have a way of changing the content of the SPA.
 
-The url hash is easily accessible trough `location.hash`
+The URL hash is easily accessible trough `location.hash`.
 
 ```js
 var path;
@@ -104,7 +104,7 @@ navigate();
 window.onhashchange = navigate;
 ```
 
-To only show the active page we need to add some styling to hide all pages that is not active.
+To only show the active page, we need to add some styling to hide all pages that is not active.
 
 ```css
 .page {
@@ -118,7 +118,7 @@ To only show the active page we need to add some styling to hide all pages that 
 
 ## Custom code for each page
 
-Some of the pages needs to load some additional information based on parameters in the url. To achieve this we can create a map of the pages with the code to run for each page.
+Some of the pages need to load some additional information based on parameters in the URL. To achieve this, we can create a map of the pages with the code to run for each page.
 
 ```js
 // Code to run for each page
@@ -141,7 +141,7 @@ if (pageFunctions.hasOwnProperty(currentPage)) {
 
 ## Adding dynamic content
 
-To add some dynamic content to the page we create a new custom function for the page bom and add a rest call.
+To add some dynamic content to the page, we create a new custom function for the page "bom" and add a rest call.
 
 We use `fetch` to retrieve the data and `reduce` to generate what we will show.
 
@@ -169,23 +169,4 @@ function bomInfo(bom) {
 
 ## Demo
 
-(might skip this / move it to another place)
-
 Working sample available at [https://dagfrode.no/vanilla-spa/src](https://dagfrode.no/vanilla-spa/src)
-
-<!--
-
----
-
-## Resources
-
-- [MDN web docs - Web Components](https://developer.mozilla.org/en-US/docs/Web/Web_Components)
-- [Do we still need JavaScript frameworks?](https://www.freecodecamp.org/news/do-we-still-need-javascript-frameworks-42576735949b/)
-
-# Ideas
-
-- Do we need frameworks? meh
-- Web Components? yey
-
-https://github.com/DagF/norbrygg
--->
