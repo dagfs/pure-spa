@@ -7,9 +7,9 @@ PAGES.main = {};
 PAGES.main.page = document.querySelector("#main");
 
 // Some other page
-PAGES.bom = {};
-PAGES.bom.page = document.querySelector("#bom");
-PAGES.bom.content = document.querySelector("#bommer");
+PAGES.toll = {};
+PAGES.toll.page = document.querySelector("#toll");
+PAGES.toll.content = document.querySelector("#tollStations");
 
 // 404
 PAGES.page404 = {};
@@ -24,22 +24,22 @@ pageFunctions.page404 = function() {
   PAGES.page404.error.innerHTML = `Page ${location.hash.substr(1)} not found!`;
 };
 
-pageFunctions["bom"] = function() {
+pageFunctions["toll"] = function() {
   fetch("https://hotell.difi.no/api/json/vegvesen/bomstasjoner?")
     .then(response => response.json())
     .then(json => {
-      PAGES["bom"].content.innerHTML = json.entries.reduce((acc, bom) => {
-        return (acc += bomInfo(bom));
+      PAGES["toll"].content.innerHTML = json.entries.reduce((acc, toll) => {
+        return (acc += tollInfo(toll));
       }, "");
     });
 };
 
-function bomInfo(bom) {
+function tollInfo(toll) {
   return `
-  <div class="bom">
-  <h2>${bom.navn}</h2>
-  <h3>Takst stor bil: ${bom.takst_stor_bil}</h3>
-  <h3>Takst liten bil: ${bom.takst_liten_bil}</h3>
+  <div class="toll">
+  <h2>${toll.navn}</h2>
+  <h3>Takst stor bil: ${toll.takst_stor_bil}</h3>
+  <h3>Takst liten bil: ${toll.takst_liten_bil}</h3>
   </div>
   `;
 }

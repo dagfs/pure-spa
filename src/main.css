@@ -30,7 +30,7 @@ body {
   box-shadow: 2px 2px grey;
 }
 
-.bom {
+.toll {
   border: 1px solid grey;
   box-shadow: 5px 5px grey;
   border-radius: 10px;
@@ -38,7 +38,7 @@ body {
   padding: 10px;
 }
 
-.bom:hover {
+.toll:hover {
   transition-duration: 0.5s;
   transform: scale(1.1);
 }

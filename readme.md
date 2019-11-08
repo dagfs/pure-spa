@@ -23,10 +23,10 @@ The templates we create for the SPA let us add static content and placeholders f
       <h1>Forside</h1>
       Alle ...
     </div>
-    <div id="bom" class="page">
+    <div id="toll" class="page">
       <a href="#main">&lt; Tilbake til forsiden</a>
-      <h1>Bompenger</h1>
-      <div id="bommer"></div>
+      <h1>Tollstations</h1>
+      <div id="tollstations"></div>
     </div>
     <div id="page404" class="page">
       <h1>404</h1>
@@ -48,9 +48,9 @@ PAGES.main = {};
 PAGES.main.page = document.querySelector("#main");
 
 // Some other page
-PAGES.bom = {};
-PAGES.bom.page = document.querySelector("#bom");
-PAGES.bom.content = document.querySelector("#bommer");
+PAGES.toll = {};
+PAGES.toll.page = document.querySelector("#toll");
+PAGES.toll.content = document.querySelector("#tollstations");
 
 // 404
 PAGES.page404 = {};
@@ -141,27 +141,27 @@ if (pageFunctions.hasOwnProperty(currentPage)) {
 
 ## Adding dynamic content
 
-To add some dynamic content to the page, we create a new custom function for the page "bom" and add a rest call.
+To add some dynamic content to the page, we create a new custom function for the page "toll" and add a rest call.
 
 We use `fetch` to retrieve the data and `reduce` to generate what we will show.
 
 ```js
-pageFunctions["bom"] = function() {
+pageFunctions["toll"] = function() {
   fetch("https://hotell.difi.no/api/json/vegvesen/bomstasjoner?")
     .then(response => response.json())
     .then(json => {
-      PAGES["bom"].content.innerHTML = json.entries.reduce((acc, bom) => {
-        return (acc += bomInfo(bom));
+      PAGES["toll"].content.innerHTML = json.entries.reduce((acc, toll) => {
+        return (acc += tollInfo(toll));
       }, "");
     });
 };
 
-function bomInfo(bom) {
+function tollInfo(toll) {
   return `
-  <div class="bom">
-  <h2>${bom.navn}</h2>
-  <h3>Takst stor bil: ${bom.takst_stor_bil}</h3>
-  <h3>Takst liten bil: ${bom.takst_liten_bil}</h3>
+  <div class="toll">
+  <h2>${toll.navn}</h2>
+  <h3>Takst stor bil: ${toll.takst_stor_bil}</h3>
+  <h3>Takst liten bil: ${toll.takst_liten_bil}</h3>
   </div>
   `;
 }
