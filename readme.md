@@ -8,7 +8,7 @@ Let's look at how we can create a simple SPA.
 
 ## Templates
 
-Let's start by creating some way of showing content. We will do this by creating a page class that will be hidden by default. In the next section, we will look at code that will add a class to the active page to show the correct content. The main page gets to be the default page shown until the javascript has loaded.
+Let's start by creating some way of showing content. We will do this by creating a `page` class that will be hidden by default. In the next section, we will look at code that will add a class to the `active` page to show the correct content. The main page gets to be the default page shown until the javascript has loaded.
 
 The templates we create for the SPA let us add static content and placeholders for the different pages. We often know much of the content of each page and then only parts of the page that is dynamic.
 
@@ -60,7 +60,9 @@ PAGES.page404.error = document.querySelector("#page404-error");
 
 ## Navigation
 
-We need some way of navigating between content in the SPA. By using the function `window.onhashchange`, we can detect when the hash in the URL changes. Combining this with anchors, and we have a way of changing the content of the SPA.
+We now have multiple pages in our SPA, most of them hidden with CSS. To make this a SPA we need some way of navigating between the pages.
+
+By using the function `window.onhashchange`, we can detect when the hash in the URL changes. Combining this with anchors, and we have a way of changing the content of the SPA.
 
 The URL hash is easily accessible trough `location.hash`.
 
@@ -104,7 +106,7 @@ navigate();
 window.onhashchange = navigate;
 ```
 
-To only show the active page, we need to add some styling to hide all pages that is not active.
+To only show the `active` page, we need to add some styling to hide all pages that is not `active`.
 
 ```css
 .page {
