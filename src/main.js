@@ -24,11 +24,11 @@ pageFunctions.page404 = function() {
   PAGES.page404.error.innerHTML = `Page ${location.hash.substr(1)} not found!`;
 };
 
-pageFunctions["toll"] = function() {
+pageFunctions.toll = function() {
   fetch("https://hotell.difi.no/api/json/vegvesen/bomstasjoner?")
     .then(response => response.json())
     .then(json => {
-      PAGES["toll"].content.innerHTML = json.entries.reduce((acc, toll) => {
+      PAGES.toll.content.innerHTML = json.entries.reduce((acc, toll) => {
         return (acc += tollInfo(toll));
       }, "");
     });
@@ -63,8 +63,6 @@ function navigate() {
       currentPage = "page404";
     }
   }
-
-  console.log(currentPage);
 
   // Hide the previous active page
   for (var page in PAGES) {
