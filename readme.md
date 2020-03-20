@@ -1,3 +1,7 @@
+Code used in the article https://javascript.christmas/2019/12
+
+---
+
 # Vanilla SPA
 
 Back when I started studying IT, I figured I wanted to create a Single Page Application(SPA). I knew some HTML, CSS, and JavaScript, and that was enough to get something up and running.
